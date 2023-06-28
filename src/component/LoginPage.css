@@ -1,0 +1,26 @@
+.LoginPage {
+  text-align: center;
+  margin: 10px;
+}
+
+.LoginPage .editor_wrapper {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+  }
+  
+  input {
+    margin-bottom: 10px;
+    height: 40px;
+    width: 100%;
+    flex: 1;
+    box-sizing: border-box;
+    border: 1px solid rgb(220, 220, 220);
+    border-radius: 5px;
+    padding: 15px;
+  }
+  
+  input:focus {
+    outline: none;
+    border: 1px solid #1f93ff;
+  }

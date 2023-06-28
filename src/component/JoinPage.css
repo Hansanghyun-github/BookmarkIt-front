@@ -1,0 +1,55 @@
+.JoinPage {
+  text-align: center;
+  margin: 10px;
+}
+
+.JoinPage .idWrapper {
+  width: 100%;
+}
+
+.JoinPage .passwordWrapper {
+  width: 100%;
+}
+
+.JoinPage .idButton {
+  float: right;
+  background-color: #ececec;
+  color: black;
+  width: 18%;
+  height: 40px;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  white-space: nowrap;
+  font-family: "Nanum Pen Script";
+}
+
+.JoinPage .inputId {
+  float: left;
+  height: 40px;
+  width: 82%;
+  flex: 1;
+  box-sizing: border-box;
+  border: 1px solid rgb(220, 220, 220);
+  border-radius: 5px;
+}
+
+.JoinPage .inputPassword {
+  text-align: left;
+  margin-bottom: 10px;
+  height: 40px;
+  width: 100%;
+  flex: 1;
+  box-sizing: border-box;
+  border: 1px solid rgb(220, 220, 220);
+  border-radius: 5px;
+}
+  
+.JoinPage input:focus {
+  outline: none;
+  border: 1px solid #1f93ff;
+}
+
+.JoinPage .ButtonWrapper {
+  text-align: center;
+}

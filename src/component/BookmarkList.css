@@ -1,0 +1,16 @@
+.BookmarkList {
+    text-align: left;
+    margin: 20px;
+    min-width: 800px;
+    width: 800px;
+    width: 100%;
+    height: fit-content;
+    background-color: white;
+    box-shadow: rgba(100, 100, 100, 0.2) 0px 7px 29px 0px;
+    border-radius: 10px;
+}
+
+.BookmarkList ul {
+    padding-left: 20px;
+    list-style: none;
+}

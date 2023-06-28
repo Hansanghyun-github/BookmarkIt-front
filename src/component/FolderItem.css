@@ -1,0 +1,18 @@
+.FolderButton {
+    width: 100%;
+    text-align: left;
+    border: none;
+    font-size: 20px;
+    background-color: #ffffff;
+    font-family: "Nanum Pen Script";
+    border-radius: 10px;
+}
+
+.FolderButton_Click {
+    background-color: #777474;
+    color: #ffffff;
+}
+
+.FolderButton_Default:hover {
+    background-color: #ececec;
+}
