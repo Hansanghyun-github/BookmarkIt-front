@@ -29,3 +29,61 @@
 .url_Clicked {
     color: rgba(0, 0, 0, .54);
 }
+
+.Buttons {
+    float: right;
+}
+
+.Update_Button {
+    pointer-events: none;
+    border-width: 0.5px;
+    margin-right: 5px;
+    border-color: white;
+    color: white;
+    cursor: pointer;
+    box-shadow: none;
+    background: none;
+    border-radius: 10px;
+    font: bold;
+    border: none;
+}
+
+.ItemButton_Clicked .Update_Button {
+    pointer-events: all;
+    border: #79ACF7;
+    color: #79ACF7;
+
+}
+
+.ItemButton_Clicked .Delete_Button {
+    pointer-events: all;
+    border: #fd565f;
+    color: #fd565f;
+
+}
+
+.Delete_Button {
+    pointer-events: none;
+    border-width: 0.5px;
+    margin-right: 5px;
+    border-color: white;
+    border: none;
+    color: white;
+    cursor: pointer;
+    box-shadow: none;
+    background: none;
+    border-radius: 10px;
+    font: bold;
+}
+
+.class_error {
+    float: right;
+    color: red;
+    font-size: 15px;
+}
+
+.class_default {
+    float: right;
+    color: white;
+    font-size: 15px;
+}

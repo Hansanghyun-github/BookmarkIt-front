@@ -16,3 +16,30 @@
 .FolderButton_Default:hover {
     background-color: #ececec;
 }
+
+.DeleteSpan {
+    float: right;
+    
+}
+
+.DeleteButton {
+    cursor: pointer;
+    padding: 0px;
+    border-radius: 100%;
+    border: none;
+    background-color: #ffffff;
+    color: #ffffff;
+    font-size: 5px;
+    width: 15px;
+    height: 15px;
+}
+
+.FolderButton_Default:hover .DeleteButton {
+    background-color: #bbbbbb;
+    color: #ffffff;
+}
+
+.FolderButton_Click .DeleteButton {
+    background-color: #bbbbbb;
+    color: #ffffff;
+}

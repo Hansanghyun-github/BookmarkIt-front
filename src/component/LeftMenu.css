@@ -1,0 +1,89 @@
+
+
+.NewButton {
+    margin-left: 15px;
+    margin-right: 20px;
+}
+
+.ReactModal {
+    display: grid;
+    place-items: center;
+    place-content: center;
+    min-height: 100vh;
+    background-color: rgba(0,0,0,0.2);
+}
+
+.Modal {
+    font: bold;
+    font-size: 25px;
+    padding: 20px;
+    border-radius: 20px;
+    background-color: white;
+    width: 500px;
+}
+
+.Input {
+    padding-top: 10px;
+    font-size: 20px;
+}
+
+.Button {
+    width: 100%;
+}
+
+.ModalButton {
+    width: 100%;
+    height: 100%;
+    text-align: right;
+}
+
+.ModalButton .Cancel {
+    width: 80px;
+    height: 40px;
+    cursor: pointer;
+    border: none;
+    margin-left: 10px;
+    border-radius: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 18px;
+    white-space: nowrap;
+    font-family: "Nanum Pen Script";
+}
+
+.ModalButton .Submit {
+    width: 80px;
+    height: 40px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    margin-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 18px;
+    white-space: nowrap;
+    font-family: "Nanum Pen Script";
+    background-color: #79ACF7;
+    color: white;
+}
+
+.EX {
+    font-size: 20px;
+    color: rgba(0,0,0,0.6);
+}
+
+.class_error {
+    float: right;
+    color: red;
+    font-size: 15px;
+}
+
+.class_default {
+    float: right;
+    color: white;
+    font-size: 15px;
+}

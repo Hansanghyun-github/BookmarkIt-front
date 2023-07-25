@@ -24,3 +24,13 @@
     outline: none;
     border: 1px solid #1f93ff;
   }
+
+  .span_default {
+    color: white;
+    font-size: 18px;
+  }
+
+  .span_wrong {
+    color: red;
+    font-size: 18px;
+  }

@@ -25,11 +25,3 @@
     width: 800px;
     border-radius: 60px;
 }
-
-.NewButton {
-    display: flex;
-    flex-direction: row;
-    flex-grow: 1;
-    overflow: hidden;
-    margin: 20px;
-}

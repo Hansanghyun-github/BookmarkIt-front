@@ -15,9 +15,9 @@ const Home = () => {
         <div className="Home">
             Bookmarkit
             {/* 설명 글 & 그림 */}
-            <div className="Button">
+            <div className="HomeButton">
                 <Button type={"positive"} onClick={goLoginPage} text={"로그인"}/>
-                <Button onClick={goTestPage} text={"테스트"}/>
+                {/* <Button onClick={goTestPage} text={"테스트"}/> */}
             </div>
         </div>
     );

@@ -1,10 +1,9 @@
 .oauth2 {
     text-align: center;
-    width: 90%;
+    width: 580px;
     border : 1px solid #111111;
     border-radius : 5px;
-    margin: 10px;
-    margin-left: 28px;
+    margin: 9px;
 }
 
 .oauth2 button {

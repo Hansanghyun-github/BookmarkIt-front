@@ -1,5 +1,6 @@
 .Button {
-    margin: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
     width: 100px;
     cursor: pointer;
     border: none;
