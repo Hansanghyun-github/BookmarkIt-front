@@ -8,7 +8,8 @@ import { DispatchContext, CreateDisplayContext } from "../App";
 const LeftMenu = () => {
     const displays = useContext(CreateDisplayContext);
     const { onCreateFolder, onCreateBookmark,
-            onClickBookmarkDisplay, onClickFolderDisplay, closeDisplay}
+            onClickBookmarkDisplay, onClickFolderDisplay, 
+            closeDisplay, toLogout}
             = useContext(DispatchContext);
     const type = (displays.messages.url || displays.messages.bookmarkName || displays.messages.folderName)
                  ?"error":"default";
@@ -41,6 +42,10 @@ const LeftMenu = () => {
     const handleOnClickBookmark = () => {
         onCreateBookmark(displays.url, displays.bookmarkName);
         //closeDisplay();
+    }
+
+    const onClickLogout = () => {
+        toLogout();
     }
 
     return (
@@ -85,7 +90,9 @@ const LeftMenu = () => {
                         </div>
                     </ReactModal>
                 </div>
-                
+                <div>
+                    <Button type={"negative"} text={"로그아웃"} onClick={onClickLogout}/>
+                </div>
             </div>
         </div>
     )

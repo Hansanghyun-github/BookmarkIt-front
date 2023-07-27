@@ -9,8 +9,8 @@ const ForlderList = () => {
     const recursiveAccess = (target) => {
         return (
             target.map((it) => (
-                <ul>
-                    <li><FolderItem key={it.id} id={it.id} name={it.name} clicked={it.clicked}/></li>
+                <ul key={it.id}>
+                    <li key={it.id}><FolderItem key={it.id} id={it.id} name={it.name} clicked={it.clicked}/></li>
                     {recursiveAccess(it.children)}
                 </ul>
             ))

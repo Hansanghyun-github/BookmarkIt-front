@@ -1,4 +1,5 @@
 .BookmarkItem {
+    width: 95%;
     padding-right: 20px;
 }
 
@@ -14,6 +15,7 @@
     width: 100%;
     height: 100%;
     margin: 0px;
+    margin-right: 20px;
     padding: 10px;
     border-radius: 10px;
 }

@@ -50,7 +50,7 @@ const BookmarkItem = ({id, url, explantion, clicked, directoryId}) => {
 
     return (
         <div className="BookmarkItem">
-            <button 
+            <div
              className={["ItemButton", `ItemButton_${btnType}`].join(" ")}
              onClick={handleOnClick}
              onDoubleClick={onDoubleClick}>
@@ -60,7 +60,7 @@ const BookmarkItem = ({id, url, explantion, clicked, directoryId}) => {
                     <button className="Update_Button" onClick={onClickUpdate}>수정</button>
                     <button className="Delete_Button" onClick={handleOnDelete}>삭제</button>
                 </span>
-            </button>
+            </div>
                 <ReactModal className="ReactModal" isOpen={updateDisplay.isOpen} ariaHideApp={false}>
                     <div className="Modal">
                         <span>북마크 수정</span>

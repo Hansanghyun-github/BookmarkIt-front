@@ -16,7 +16,7 @@ const FolderItem = ({id, name, clicked}) => {
     }
 
     return (
-        <button 
+        <div 
          className={["FolderButton", `FolderButton_${btnType}`].join(" ")}
          onClick={handleOnClick}
         >
@@ -24,7 +24,7 @@ const FolderItem = ({id, name, clicked}) => {
             <span className="DeleteSpan">
                 <button className="DeleteButton" onClick={handleOnDelete}>X</button>
             </span>
-        </button>
+        </div>
     );
 };
 

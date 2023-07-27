@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import './App.css';
 import Home from './pages/Home';
 import Join from './pages/Join';
@@ -8,6 +8,7 @@ import React, { useEffect, useReducer } from 'react';
 import { createFolder, deleteFolder, updateFolder } from './util';
 import axios from 'axios';
 import { reducerUpdateDisplay,reducerCreateDisplay } from './reducerFunction/reducerDisplay';
+import base64 from 'base-64';
 
 let JSONBookmarks = [];
 
@@ -94,9 +95,7 @@ function reducerFolder(state, action) {
     }
     case "INIT":{
       settingFolders(action.data);
-      console.log("-------------- setting finished --------------");
       let rootFolder = JSONFolders.find((it) => it.name === "root");
-      console.log(rootFolder);
       rootFolder.clicked = 1;
       rootFolderId = rootFolder.id;
       clickedFolderId = rootFolderId;
@@ -111,8 +110,6 @@ function reducerFolder(state, action) {
       clickedFolderId = action.targetId;
       clickedBookmarkId = -1;
       JSONFolders = tempFolders;
-
-      //console.log("after clicked");
 
       return JSONFolders;
     }
@@ -129,9 +126,11 @@ export const CreateDisplayContext = React.createContext();
 export const UpdateDisplayContext = React.createContext();
 
 function App() {
+  const navigate = useNavigate();
 
   const [bookmarks, dispatchBookmark] = useReducer(reducerBookmark, []);
   const [folders, dispatchFolder] = useReducer(reducerFolder, []);
+
   const [createDisplay, dispatchCreateDisplay] = useReducer(reducerCreateDisplay
     , {
         messages: {},
@@ -152,9 +151,132 @@ function App() {
       });
 
   useEffect(() => {
-    axios.get("http://localhost:8080/bookmarks")
+    dispatchBookmark({
+      type:"CHANGE",
+      clickedFolderId,
+      data: JSONBookmarks,
+    })
+  }, [folders]);
+
+  const toLogin = (username, password) => {
+    axios.post(
+      "http://localhost:8080/login",
+      {
+        username,
+        password,
+      },
+      {
+          headers:{
+              'Content-type': 'application/json', 
+              'Accept': 'application/json' 
+          }
+    })
     .then((response) => {
-        console.log(response.data);
+      console.log('login suceess');
+      localStorage.setItem('jwtToken', response.data.token);
+      localStorage.setItem('refreshToken', response.data.refreshToken);
+      navigate("/bookmarks");
+    })
+    .catch((error) => {
+      console.log(error.response.data);
+    });
+  }
+
+  const toLogout = async () => {
+    await checkTokenExpiredAndGetAgain();
+    await axios.post("http://localhost:8080/api/auth/logout",{},{
+      headers:{
+        'Authorization': localStorage.getItem('jwtToken')
+      }})
+    .then((response) => {
+
+    })
+    .catch((error) => console.log(error.response.data));
+    localStorage.setItem("jwtToken", "");
+    localStorage.setItem("refreshToken", "");
+    navigate("/login");
+  }
+
+  const toJoin = (username, password) => {
+    axios.post(
+      "http://localhost:8080/api/auth/join",
+      {
+        username,
+        password,
+      },
+      {
+          headers:{
+              'Content-type': 'application/json', 
+              'Accept': 'application/json' 
+          }
+    })
+    .then((response) => {
+      console.log(response.data);
+      navigate("/login");
+    })
+    .catch((error) => {
+        console.log(error.response.data);
+    });
+  }
+
+  async function isDuplicate(username) {
+    try{
+      const result = await axios.post("http://localhost:8080/api/auth/duplicate", {username})
+      return Boolean(result.data);
+    } catch(error){
+      return true;
+    }
+  }
+
+  async function getJwtTokenAgain() {
+    let result;
+    try{
+      result = await axios.post(
+        "http://localhost:8080/api/auth/refreshtoken",
+      {
+        refreshToken: localStorage.getItem('refreshToken')
+      },
+      {
+          headers:{
+              'Content-type': 'application/json', 
+              'Accept': 'application/json' 
+          }
+      })
+    } catch(error){
+      console.log(error.response.data);
+    }
+    return result;
+  }
+
+  const checkTokenExpiredAndGetAgain = async () => {
+    let token = localStorage.getItem('jwtToken');
+    let payload = token.substring(token.indexOf('.')+1,token.lastIndexOf('.')); 
+    let dec = JSON.parse(base64.decode(payload));
+    if(dec.exp - Date.now()/1000 < 0) { // token was expired
+      console.log("token was expired");
+      
+      const result = await getJwtTokenAgain();
+      localStorage.setItem('jwtToken', result.data.token);
+      localStorage.setItem('refreshToken', result.data.refreshToken);
+    };
+  }
+  
+  const getAllBookmarksAndFolders = async () => {
+    if(!localStorage.getItem("jwtToken")){
+      console.log("have to authenticate");
+      navigate("/login");
+      return;
+    }
+    await checkTokenExpiredAndGetAgain();
+    axios.get(
+      "http://localhost:8080/bookmarks",
+      {
+        headers:{
+          'Authorization': localStorage.getItem('jwtToken')
+        }
+      }
+      )
+    .then((response) => {
         const data=response.data;
         dispatchBookmark({
           type:"INIT",
@@ -164,21 +286,15 @@ function App() {
           type:"INIT",
           data:data.directories,
         });
+        navigate("/bookmarks");
     })
     .catch((error) => {
-        console.log(error);
+        console.log(error.response.data);
     });
-  }, []);
+  }
 
-  useEffect(() => {
-    dispatchBookmark({
-      type:"CHANGE",
-      clickedFolderId,
-      data: JSONBookmarks,
-    })
-  }, [folders]);
-
-  const onCreateBookmark = (url, bookmarkName) => {
+  const onCreateBookmark = async (url, bookmarkName) => {
+    await checkTokenExpiredAndGetAgain();
     axios.post(
       "http://localhost:8080/bookmarks",
       {
@@ -189,11 +305,11 @@ function App() {
       {
           headers:{
               'Content-type': 'application/json', 
-              'Accept': 'application/json' 
+              'Accept': 'application/json',
+              'Authorization': localStorage.getItem('jwtToken')
           }
     })
     .then((response) => {
-      console.log("create bookmark " + response.data);
       const data = response.data;
       dispatchBookmark({
         type: "CREATE",
@@ -210,7 +326,7 @@ function App() {
       });
     })
     .catch((error) => {
-        console.log(error);
+        console.log(error.response.data);
         dispatchCreateDisplay({
           type: "errorBookmark",
           data: {
@@ -223,7 +339,8 @@ function App() {
     });
   };
 
-  const onCreateFolder = (folderName) => {
+  const onCreateFolder = async(folderName) => {
+    await checkTokenExpiredAndGetAgain();
     axios.post(
       "http://localhost:8080/directories",
       {
@@ -233,11 +350,11 @@ function App() {
       {
           headers:{
               'Content-type': 'application/json', 
-              'Accept': 'application/json' 
+              'Accept': 'application/json',
+              'Authorization': localStorage.getItem('jwtToken')
           }
     })
     .then((response) => {
-      console.log("create folder " + response.data);
       const data = response.data;
       dispatchFolder({
         type:"CREATE",
@@ -259,7 +376,7 @@ function App() {
       });
     })
     .catch((error) => {
-        console.log(error);
+        console.log(error.response.data);
         dispatchCreateDisplay({
           type: "errorFolder",
           data: {
@@ -270,8 +387,8 @@ function App() {
     });
   };
 
-  const onUpdateBookmark = (targetId, url, bookmarkName, directoryId) => {
-    console.log("update start");
+  const onUpdateBookmark = async (targetId, url, bookmarkName, directoryId) => {
+    await checkTokenExpiredAndGetAgain();
     axios.post(
       "http://localhost:8080/bookmarks/"+targetId,
       {
@@ -281,11 +398,11 @@ function App() {
       {
           headers:{
               'Content-type': 'application/json', 
-              'Accept': 'application/json' 
+              'Accept': 'application/json',
+              'Authorization': localStorage.getItem('jwtToken')
           }
     })
     .then((response) => {
-      console.log("update bookmark " + response.data);
       dispatchBookmark({
         type:"UPDATE",
         data:{
@@ -297,7 +414,7 @@ function App() {
       })
     })
     .catch((error) => {
-        console.log(error);
+        console.log(error.response.data);
         dispatchUpdateDisplay({
           type: "errorBookmark",
           data: {
@@ -310,7 +427,8 @@ function App() {
     });
   }
 
-  const onUpdateFolder = (targetId, name) => {
+  const onUpdateFolder = async (targetId, name) => {
+    await checkTokenExpiredAndGetAgain();
     dispatchFolder({
       type:"UPDATE",
       data:{
@@ -320,24 +438,38 @@ function App() {
     })
   }
   
-  const onDeleteBookmark = (targetId) => {
-    axios.delete("http://localhost:8080/bookmarks/"+targetId)
+  const onDeleteBookmark = async (targetId) => {
+    await checkTokenExpiredAndGetAgain();
+    axios.delete(
+      "http://localhost:8080/bookmarks/"+targetId,
+      {
+        headers:{
+          'Authorization': localStorage.getItem('jwtToken')
+        }
+      }
+      )
     .then((response) => {
-      console.log("delete bookmark " + response.data);
       dispatchBookmark({
         type:"DELETE",
         targetId,
       });
     })
     .catch((error) => {
-        console.log(error);
+        console.log(error.response.data);
     });
   };
   
-  const onDeleteFolder = (targetId) => {
-    axios.delete("http://localhost:8080/directories/"+targetId)
+  const onDeleteFolder = async (targetId) => {
+    await checkTokenExpiredAndGetAgain();
+    axios.delete(
+      "http://localhost:8080/directories/"+targetId,
+      {
+        headers:{
+          'Authorization': localStorage.getItem('jwtToken')
+        }
+      }
+      )
     .then((response) => {
-      console.log("delete bookmark " + response.data);
       dispatchFolder({
         type:"CLICK",
         targetId: rootFolderId,
@@ -349,7 +481,7 @@ function App() {
       });
     })
     .catch((error) => {
-        console.log(error);
+        console.log(error.response.data);
     });
   };
 
@@ -416,6 +548,8 @@ function App() {
             <UpdateDisplayContext.Provider value={updateDisplay}>
               <DispatchContext.Provider 
               value={{
+                toLogin, toJoin, isDuplicate, toLogout,
+                getAllBookmarksAndFolders,
                 onCreateBookmark, onCreateFolder,
                 onUpdateBookmark, onUpdateFolder,
                 onDeleteBookmark, onDeleteFolder,

@@ -6,6 +6,9 @@
     background-color: #ffffff;
     font-family: "Nanum Pen Script";
     border-radius: 10px;
+
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 .FolderButton_Click {
@@ -18,11 +21,13 @@
 }
 
 .DeleteSpan {
+    padding-top: 5px;
+    display: flex;
     float: right;
-    
 }
 
 .DeleteButton {
+    
     cursor: pointer;
     padding: 0px;
     border-radius: 100%;

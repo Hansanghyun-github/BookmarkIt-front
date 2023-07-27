@@ -26,6 +26,7 @@
   }
 
   .span_default {
+    cursor: not-allowed;
     color: white;
     font-size: 18px;
   }

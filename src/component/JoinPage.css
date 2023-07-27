@@ -24,6 +24,10 @@
   font-family: "Nanum Pen Script";
 }
 
+.idButton_checked {
+  pointer-events: none;
+}
+
 .JoinPage .inputId {
   float: left;
   height: 40px;

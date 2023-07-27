@@ -1,12 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import Button from "./Button";
 import "./LoginPage.css"
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { DispatchContext } from "../App";
 
 const LoginPage = () => {
-    //const [searchParams, setSearchParams] = useSearchParams();
-    const type = "default";
+    const [type, setType] = useState("default");
     const [id, setId] = useState("");
+    const {toLogin} = useContext(DispatchContext);
     const [password, setPassword] = useState("");
     const onChangeId = (e) => {
         setId(e.target.value);
@@ -16,10 +17,10 @@ const LoginPage = () => {
     }
 
     const navigate = useNavigate();
-    const toLogin = () => {
-        // TODO login check
-        // const flag = loginAPI(id, password);
-        navigate("/bookmarks");
+    const clickLogin = () => {
+        if(id && password)
+            toLogin(id, password);
+        setType("wrong");
     };
     const goJoin = () => {
         navigate("/join");
@@ -35,7 +36,7 @@ const LoginPage = () => {
             <div>
                 <input type="password" value={password} onChange={onChangePassword} placeholder="비밀번호"/>
             </div>
-            <Button text={"로그인"} type={"positive"} onClick={toLogin}/>
+            <Button text={"로그인"} type={"positive"} onClick={clickLogin}/>
             <Button text={"회원가입"} onClick={goJoin} />
         </div>
     );

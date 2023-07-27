@@ -5,13 +5,13 @@ import "./Oauth2Page.css";
 const Oauth2Page = () => {
     const navigate = useNavigate();
     const googleLogin = () => {
-        navigate("/");
+        alert("소셜 로그인 기능은 곧 추가됩니다");
     };
     const kakaoLogin = () => {
-        navigate("/");
+        alert("소셜 로그인 기능은 곧 추가됩니다");
     };
     const naverLogin = () => {
-        navigate("/");
+        alert("소셜 로그인 기능은 곧 추가됩니다");
     };
 
     return (
