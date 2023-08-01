@@ -10,6 +10,9 @@ import axios from 'axios';
 import { reducerUpdateDisplay,reducerCreateDisplay } from './reducerFunction/reducerDisplay';
 import base64 from 'base-64';
 
+const IP_address = "localhost";
+const URL = "http://"+IP_address+":8080"
+
 let JSONBookmarks = [];
 
 let JSONFolders = [];
@@ -160,7 +163,7 @@ function App() {
 
   const toLogin = (username, password) => {
     axios.post(
-      "http://localhost:8080/login",
+      URL+"/login",
       {
         username,
         password,
@@ -173,6 +176,8 @@ function App() {
     })
     .then((response) => {
       console.log('login suceess');
+      JSONBookmarks=[];
+      JSONFolders=[];
       localStorage.setItem('jwtToken', response.data.token);
       localStorage.setItem('refreshToken', response.data.refreshToken);
       navigate("/bookmarks");
@@ -184,7 +189,7 @@ function App() {
 
   const toLogout = async () => {
     await checkTokenExpiredAndGetAgain();
-    await axios.post("http://localhost:8080/api/auth/logout",{},{
+    await axios.post(URL+"/api/auth/logout",{},{
       headers:{
         'Authorization': localStorage.getItem('jwtToken')
       }})
@@ -199,7 +204,7 @@ function App() {
 
   const toJoin = (username, password) => {
     axios.post(
-      "http://localhost:8080/api/auth/join",
+      URL+"/api/auth/join",
       {
         username,
         password,
@@ -221,7 +226,7 @@ function App() {
 
   async function isDuplicate(username) {
     try{
-      const result = await axios.post("http://localhost:8080/api/auth/duplicate", {username})
+      const result = await axios.post(URL+"/api/auth/duplicate", {username})
       return Boolean(result.data);
     } catch(error){
       return true;
@@ -232,7 +237,7 @@ function App() {
     let result;
     try{
       result = await axios.post(
-        "http://localhost:8080/api/auth/refreshtoken",
+        URL+"/api/auth/refreshtoken",
       {
         refreshToken: localStorage.getItem('refreshToken')
       },
@@ -269,7 +274,7 @@ function App() {
     }
     await checkTokenExpiredAndGetAgain();
     axios.get(
-      "http://localhost:8080/bookmarks",
+      URL+"/bookmarks",
       {
         headers:{
           'Authorization': localStorage.getItem('jwtToken')
@@ -296,7 +301,7 @@ function App() {
   const onCreateBookmark = async (url, bookmarkName) => {
     await checkTokenExpiredAndGetAgain();
     axios.post(
-      "http://localhost:8080/bookmarks",
+      URL+"/bookmarks",
       {
         url: url,
         name: bookmarkName,
@@ -342,7 +347,7 @@ function App() {
   const onCreateFolder = async(folderName) => {
     await checkTokenExpiredAndGetAgain();
     axios.post(
-      "http://localhost:8080/directories",
+      URL+"/directories",
       {
         name: folderName,
         prevDirectoryId: clickedFolderId
@@ -390,7 +395,7 @@ function App() {
   const onUpdateBookmark = async (targetId, url, bookmarkName, directoryId) => {
     await checkTokenExpiredAndGetAgain();
     axios.post(
-      "http://localhost:8080/bookmarks/"+targetId,
+      URL+"/bookmarks/"+targetId,
       {
         url: url,
         name: bookmarkName
@@ -441,7 +446,7 @@ function App() {
   const onDeleteBookmark = async (targetId) => {
     await checkTokenExpiredAndGetAgain();
     axios.delete(
-      "http://localhost:8080/bookmarks/"+targetId,
+      URL+"/bookmarks/"+targetId,
       {
         headers:{
           'Authorization': localStorage.getItem('jwtToken')
@@ -462,7 +467,7 @@ function App() {
   const onDeleteFolder = async (targetId) => {
     await checkTokenExpiredAndGetAgain();
     axios.delete(
-      "http://localhost:8080/directories/"+targetId,
+      URL+"/directories/"+targetId,
       {
         headers:{
           'Authorization': localStorage.getItem('jwtToken')

@@ -13,7 +13,7 @@ const BookmarkItem = ({id, url, explantion, clicked, directoryId}) => {
     } = useContext(DispatchContext);
     const btnType = (clicked === 1) ? "Clicked" : "Default";
     const onDoubleClick = () => {
-        alert(url);
+        window.open(url);
     };
     const handleOnClick = () => {
         onClickBookmark(id);
