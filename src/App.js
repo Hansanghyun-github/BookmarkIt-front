@@ -10,7 +10,7 @@ import axios from 'axios';
 import { reducerUpdateDisplay,reducerCreateDisplay } from './reducerFunction/reducerDisplay';
 import base64 from 'base-64';
 
-const IP_address = "localhost";
+const IP_address = "www.bookmarkit.shop";
 const URL = "http://"+IP_address+":8080"
 
 let JSONBookmarks = [];
